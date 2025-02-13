@@ -38,6 +38,8 @@
                             Functions
                         </button>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="setFunction('prime')">Prime</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setFunction('even')">Even</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setFunction('fibonacci')">Fibonacci</a></li>
                             <li><a class="dropdown-item" href="#" onclick="setFunction('factorial')">Factorial</a></li>
                         </ul>
@@ -50,52 +52,74 @@
         </div>
     </div>
 
-    <script>
-        let selectedFunction = '';
+<script>
+let selectedFunction = '';
 
-        function setFunction(func) {
-            selectedFunction = func;
-            document.getElementById("functionDropdown").innerText = func.charAt(0).toUpperCase() + func.slice(1);
+function setFunction(func) {
+    selectedFunction = func;
+    document.getElementById("functionDropdown").innerText = func.charAt(0).toUpperCase() + func.slice(1);
+}
+
+function calculateResult() {
+    let num = parseInt(document.getElementById("numbers").value);
+    let resultText = "";
+
+    if (isNaN(num) || num < 0) {
+        resultText = "Please enter a valid positive number.";
+    } else {
+        switch (selectedFunction) {
+            case "fibonacci":
+                resultText = "Fibonacci: " + fibonacci(num);
+                break;
+            case "factorial":
+                resultText = "Factorial: " + factorial(num);
+                break;
+            case "prime":
+                resultText = num + (isPrime(num) ? " is a Prime number." : " is not a Prime number.");
+                break;
+            case "even":
+                resultText = num + (isEven(num) ? " is Even." : " is Odd.");
+                break;
+            default:
+                resultText = "Please select a function.";
         }
+    }
+    document.getElementById("result").innerText = resultText;
+}
 
-        function calculateResult() {
-            let num = parseInt(document.getElementById("numbers").value);
-            let resultText = "";
+function fibonacci(n) {
+    if (n === 0) return 0;
+    if (n === 1) return 1;
+    let a = 0, b = 1, sum;
+    for (let i = 2; i <= n; i++) {
+        sum = a + b;
+        a = b;
+        b = sum;
+    }
+    return b;
+}
 
-            if (isNaN(num) || num < 0) {
-                resultText = "Please enter a valid positive number.";
-            } else {
-                if (selectedFunction === "fibonacci") {
-                    resultText = "Fibonacci: " + fibonacci(num);
-                } else if (selectedFunction === "factorial") {
-                    resultText = "Factorial: " + factorial(num);
-                } else {
-                    resultText = "Please select a function.";
-                }
-            }
-            document.getElementById("result").innerText = resultText;
-        }
+function factorial(n) {
+    if (n === 0 || n === 1) return 1;
+    let fact = 1;
+    for (let i = 2; i <= n; i++) {
+        fact *= i;
+    }
+    return fact;
+}
 
-        function fibonacci(n) {
-            if (n === 0) return 0;
-            if (n === 1) return 1;
-            let a = 0, b = 1, sum;
-            for (let i = 2; i <= n; i++) {
-                sum = a + b;
-                a = b;
-                b = sum;
-            }
-            return b;
-        }
+function isPrime(n) {
+    if (n < 2) return false;
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) return false;
+    }
+    return true;
+}
 
-        function factorial(n) {
-            if (n === 0 || n === 1) return 1;
-            let fact = 1;
-            for (let i = 2; i <= n; i++) {
-                fact *= i;
-            }
-            return fact;
-        }
+function isEven(n) {
+    return n % 2 === 0;
+}
+
     </script>
 </body>
 </html>
